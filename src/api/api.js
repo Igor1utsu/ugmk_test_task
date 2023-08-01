@@ -7,7 +7,7 @@ export const productsAPI = {
       const { data } = await axiosInstance.get(FETCH_PRODUCTS)
       return data
     } catch (error) {
-      console.error(error)
+      throw new Error(error)
     }
   },
 }
