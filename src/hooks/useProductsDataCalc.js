@@ -11,7 +11,7 @@ export const useProductsDataCalc = ({ data, factoryId, monthNumber }) => {
     data?.forEach((item) => {
       if (
         item.factory_id === factoryId &&
-        new Date(item.date).getMonth() === monthNumber
+        new Date(item.date).getMonth() === monthNumber - 1
       ) {
         productType1 += item.product1
         productType2 += item.product2
