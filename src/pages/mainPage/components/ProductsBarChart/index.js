@@ -69,6 +69,15 @@ const ProductsBarChart = ({ data }) => {
     }
   }
 
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Количество продукции (в тоннах) произведенной фабриками',
+      },
+    },
+  }
+
   return (
     <div className="products-bar-wrapper">
       <div>
@@ -80,7 +89,7 @@ const ProductsBarChart = ({ data }) => {
         </select>
       </div>
       {chartData && (
-        <Bar data={chartData} ref={chartRef} onClick={handleClickItem} />
+        <Bar data={chartData} ref={chartRef} onClick={handleClickItem} options={options}/>
       )}
     </div>
   )
