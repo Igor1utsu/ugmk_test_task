@@ -4,27 +4,27 @@ export const useProductsDataCalc = ({ data, factoryId, monthNumber }) => {
   const [productsType1, setProductsType1] = useState(0)
   const [productsType2, setProductsType2] = useState(0)
 
-  const сalculateQTYProducts = (data) => {
-    let type1 = 0
-    let type2 = 0
+  const сalculateVolumeProducts = (data) => {
+    let productType1 = 0
+    let productType2 = 0
 
-    data?.forEach((d) => {
+    data?.forEach((item) => {
       if (
-        d.factory_id === factoryId &&
-        new Date(d.date).getMonth() === monthNumber
+        item.factory_id === factoryId &&
+        new Date(item.date).getMonth() === monthNumber
       ) {
-        type1 += d.product1
-        type2 += d.product2
+        productType1 += item.product1
+        productType2 += item.product2
       }
     })
 
-    return { type1, type2 }
+    return { productType1, productType2 }
   }
 
   useEffect(() => {
-    const { type1, type2 } = сalculateQTYProducts(data)
-    setProductsType1(type1)
-    setProductsType2(type2)
+    const { productType1, productType2 } = сalculateVolumeProducts(data)
+    setProductsType1(productType1)
+    setProductsType2(productType2)
   }, [data])
 
   return { productsType1, productsType2 }
