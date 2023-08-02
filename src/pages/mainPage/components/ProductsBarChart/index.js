@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Bar } from 'react-chartjs-2'
+import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Bar, getElementAtEvent } from 'react-chartjs-2'
 import { useProcessData } from 'hooks'
 import {
   MONTHS,
@@ -10,6 +11,10 @@ import {
 import './style.css'
 
 const ProductsBarChart = ({ data }) => {
+  const navigate = useNavigate()
+
+  const chartRef = useRef()
+
   // Состояние для хранения данных диаграммы
   const [chartData, setChartData] = useState(null)
   // Состояние для хранения значения фильтра продукции
@@ -50,6 +55,29 @@ const ProductsBarChart = ({ data }) => {
     })
   }
 
+  const handleClickItem = (event) => {
+    const elem = getElementAtEvent(chartRef.current, event)
+
+    const barIndex = elem[0]?.index
+    const stackIndex = elem[0]?.datasetIndex
+
+    if (typeof barIndex !== 'undefined' && typeof stackIndex !== 'undefined') {
+      const monthNum = barIndex + 1
+      const factoryId = stackIndex === 0 ? 1 : 2
+
+      navigate(`/details/${factoryId}/${monthNum}`)
+    }
+  }
+
+  const options = {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Количество продукции (в тоннах) произведенной фабриками',
+      },
+    },
+  }
+
   return (
     <div className="products-bar-wrapper">
       <div>
@@ -60,7 +88,9 @@ const ProductsBarChart = ({ data }) => {
           <option value="product2">Продукт 2</option>
         </select>
       </div>
-      {chartData && <Bar data={chartData} />}
+      {chartData && (
+        <Bar data={chartData} ref={chartRef} onClick={handleClickItem} options={options}/>
+      )}
     </div>
   )
 }

@@ -22,7 +22,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:scripts": "npx eslint src/**/*.{js,jsx}",
-    "lint:styles": "npx stylelint src/**/*.scss"
+    "lint:styles": "npx stylelint src/**/*.scss",
+    "dockerize": "docker build -f Dockerfile -t ugmk_test_app .",
+    "start-container": "docker run --rm -p 3000:3000 --name ugmk_test_app ugmk_test_app"
   },
   "eslintConfig": {
     "extends": [
