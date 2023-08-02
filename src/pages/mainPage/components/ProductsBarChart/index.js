@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Bar } from 'react-chartjs-2'
 import { useProcessData } from 'hooks'
-import { MOUTHS } from 'constants/chart'
+import {
+  MONTHS,
+  factoryACommonDataset,
+  factoryBCommonDataset,
+} from 'constants/chart'
 
 import './style.css'
 
 const ProductsBarChart = ({ data }) => {
   // Состояние для хранения данных диаграммы
-  const [chartData, setChartData] = useState({})
+  const [chartData, setChartData] = useState(null)
   // Состояние для хранения значения фильтра продукции
   const [productFilter, setProductFilter] = useState(
     localStorage.getItem('productFilter') || 'all'
@@ -18,30 +22,25 @@ const ProductsBarChart = ({ data }) => {
   // Обновление данных диаграммы при изменении пропса data
   useEffect(() => {
     setChartData({
-      labels: MOUTHS,
+      labels: MONTHS,
       datasets: [
         {
-          label: 'Фабрика А',
+          ...factoryACommonDataset,
           data: factoryAData,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgba(255, 99, 132, 1)',
-          borderWidth: 1,
         },
         {
-          label: 'Фабрика Б',
+          ...factoryBCommonDataset,
           data: factoryBData,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
         },
       ],
     })
-  }, [data, factoryAData, factoryBData ])
+  }, [data, factoryAData, factoryBData])
 
   // Обработчик изменения значения фильтра продукции
   const handleProductFilterChange = (event) => {
-    setProductFilter(event.target.value)
-    localStorage.setItem('productFilter', event.target.value)
+    const value = event.target.value
+    setProductFilter(value)
+    localStorage.setItem('productFilter', value)
     setChartData({
       ...chartData,
       datasets: [
@@ -61,7 +60,7 @@ const ProductsBarChart = ({ data }) => {
           <option value="product2">Продукт 2</option>
         </select>
       </div>
-      {chartData?.datasets?.length && <Bar data={chartData} />}
+      {chartData && <Bar data={chartData} />}
     </div>
   )
 }
